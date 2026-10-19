@@ -1,0 +1,19 @@
+#!/bin/bash
+
+check_disk(){
+	local direct=$1
+	local procent=$2
+	local usage=$(df -P "$direct" | awk 'NR==2 {print $5}' | sed 's/%//')
+	if [ "$usage" -gt "$procent" ]; then
+        	echo "ВНИМАНИЕ: Использование диска (${usage}%) превышает заданный порог (${procent}%)!"
+        else
+        	echo "Все в порядке: использование диска в пределах нормы."
+        fi
+}
+
+if [ $# -ne 2 ]; then
+	echo "Использование  $0  <direct> <procent>"
+	exit 1
+fi
+
+check_disk "$1" "$2"
