@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int prost(int n){
+	if (n==1) return 1;
+	int count_del=0;
+	for(int i=1; i<=n ;i++){
+		if (n%i==0){
+			count_del+=1;
+		}	
+	}
+	if (count_del==2) return 1;
+    else return 0;
+}
+
+void pokaz(int *m, int n){
+	printf("%i ",m[0]);
+	for (int i=1;i<n;i++){
+		printf("+ %i ", m[i]);
+	}
+	printf("\n");
+ }
+
+void findSums(int target, int max_val, int *current_comb, int index) {
+    if (target == 0) {
+        pokaz(current_comb, index);
+        return;
+    }
+
+    for (int i = max_val; i >= 1; i--) {
+        if (i <= target && prost(i)) {
+            current_comb[index] = i;
+            findSums(target - i, i, current_comb, index + 1);
+        }
+    }
+}
+
+int main() {
+    int n;
+    printf("Введите натуральное число N: ");
+    scanf("%d", &n);
+
+    int *current_comb = (int *)malloc(n * sizeof(int));
+    printf("Вывод:\n");
+    findSums(n, n, current_comb, 0);
+
+    free(current_comb);
+    return 0;
+}
